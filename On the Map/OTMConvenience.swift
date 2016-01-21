@@ -42,6 +42,71 @@ extension OTMClient {
             }
         }
     }
+    
+    // MARK: DELETEing (Logging Out Of) a Session
+    
+    func deleteSession(completionHandler: (success: Bool, error: NSError?) -> Void) {
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let method : String = Methods.UdacityDeleteSession
+        
+        /* 2. Make the request */
+        taskForDELETEMethod(method) { JSONResult, error in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                print("Phooey!")
+                completionHandler(success: false, error: error)
+            } else {
+                if let results = JSONResult["session"]!!["id"] as? String {
+                    if OTMClient.sharedInstance().sessionID == results {
+                        OTMClient.sharedInstance().sessionID = nil
+                        print("Session deleted for ID: \(results)")
+                        completionHandler(success: true, error: nil)
+                    } else {
+                        print("Incorrect session returned for DELETE command. Returned ID: \(results)")
+                        completionHandler(success: false, error: NSError(domain: "deleteSession parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Incorrect session returned for DELETE command. Returned ID: \(results)"]))
+                    }
+                } else {
+                    completionHandler(success: false, error: NSError(domain: "deleteSession parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse deleteSession"]))
+                }
+            }
+        }
+    }
+    
+    // MARK: GETing Public User Data
+   /*
+    func getUserData(userID: String, completionHandler: (result: [StudentLocation]?, error: NSError?) -> Void) -> NSURLSessionDataTask? {
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        var mutableMethod : String = Methods.UdacityUserData
+        mutableMethod = OTMClient.subtituteKeyInMethod(mutableMethod, key: OTMClient.URLKeys.UserID, value: userID)!
+        
+        /* 2. Make the request */
+        let task = taskForGETMethod(mutableMethod) { JSONResult, error in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandler(result: nil, error: error)
+            } else {
+                
+                if let results = JSONResult[OTMClient.JSONResponseKeys.StudentResults] as? [[String : AnyObject]] {
+                    
+                    let movies = StudentLocation..moviesFromResults(results)
+                    completionHandler(result: movies, error: nil)
+                } else {
+                    completionHandler(result: nil, error: NSError(domain: "getMoviesForSearchString parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getMoviesForSearchString"]))
+                }
+            }
+        }
+        
+        return task
+    }
+
+    */
+    
+    
+    
     /*
     
     // MARK: POSTing (Creating) a Session

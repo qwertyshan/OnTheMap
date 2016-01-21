@@ -47,4 +47,15 @@ class StudentLocation: NSObject {
         self.longitude = longitude
         self.latitude = latitude
     }
+    
+    // Helper: Given an array of dictionaries, convert them to an array of StudentLocation objects
+    static func studentsFromResults(results: [[String : AnyObject]]) -> [StudentLocation] {
+        var studentLocations = [StudentLocation]()
+        
+        for result in results {
+            studentLocations.append(StudentLocation(dictionary: result))
+        }
+        
+        return studentLocations
+    }
 }

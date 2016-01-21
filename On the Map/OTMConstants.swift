@@ -46,10 +46,7 @@ extension OTMClient {
     // MARK: Parameter Keys
     struct ParameterKeys {
         
-        static let ApiKey = "api_key"
-        static let SessionID = "session_id"
-        static let RequestToken = "request_token"
-        static let Query = "query"
+        static let UserID = "id"
         
     }
     
@@ -92,6 +89,7 @@ extension OTMClient {
         static let longitude = "-122.065"
         static let createdAt = "Feb 25, 2015, 01:10"
         static let updatedAt = "Mar 09, 2015, 23:34"
+        static let studentResults = ["results"]
         
     }
     
