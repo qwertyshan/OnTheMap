@@ -8,20 +8,40 @@
 
 /* Begin PBXBuildFile section */
 		8FC9D5841C4F35B10010B0B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */; };
-		8FC9D5861C4F35B10010B0B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5851C4F35B10010B0B9 /* ViewController.swift */; };
+		8FC9D5861C4F35B10010B0B9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5851C4F35B10010B0B9 /* LoginViewController.swift */; };
 		8FC9D5891C4F35B10010B0B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FC9D5871C4F35B10010B0B9 /* Main.storyboard */; };
 		8FC9D58B1C4F35B10010B0B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FC9D58A1C4F35B10010B0B9 /* Assets.xcassets */; };
 		8FC9D58E1C4F35B10010B0B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FC9D58C1C4F35B10010B0B9 /* LaunchScreen.storyboard */; };
+		8FC9D59D1C5034FF0010B0B9 /* StudentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D59C1C5034FF0010B0B9 /* StudentDetailsViewController.swift */; };
+		8FC9D59F1C5035220010B0B9 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D59E1C5035220010B0B9 /* ListViewController.swift */; };
+		8FC9D5A11C5035320010B0B9 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5A01C5035320010B0B9 /* MapViewController.swift */; };
+		8FC9D5A71C50400A0010B0B9 /* OTMAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5A61C50400A0010B0B9 /* OTMAuthViewController.swift */; };
+		8FC9D5AD1C5040570010B0B9 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5AC1C5040570010B0B9 /* StudentLocation.swift */; };
+		8FC9D5AF1C5040790010B0B9 /* OTMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5AE1C5040790010B0B9 /* OTMConstants.swift */; };
+		8FC9D5B11C5040B30010B0B9 /* OTMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5B01C5040B30010B0B9 /* OTMClient.swift */; };
+		8FC9D5B31C5041160010B0B9 /* OTMConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5B21C5041160010B0B9 /* OTMConvenience.swift */; };
+		8FC9D5C01C5076BE0010B0B9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FC9D5BF1C5076BE0010B0B9 /* FBSDKCoreKit.framework */; };
+		8FC9D5C21C5076E80010B0B9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FC9D5C11C5076E80010B0B9 /* FBSDKLoginKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8FC9D5801C4F35B10010B0B9 /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8FC9D5851C4F35B10010B0B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8FC9D5851C4F35B10010B0B9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8FC9D5881C4F35B10010B0B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8FC9D58A1C4F35B10010B0B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8FC9D58D1C4F35B10010B0B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8FC9D58F1C4F35B10010B0B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8FC9D59C1C5034FF0010B0B9 /* StudentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentDetailsViewController.swift; sourceTree = "<group>"; };
+		8FC9D59E1C5035220010B0B9 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		8FC9D5A01C5035320010B0B9 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		8FC9D5A61C50400A0010B0B9 /* OTMAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMAuthViewController.swift; sourceTree = "<group>"; };
+		8FC9D5AC1C5040570010B0B9 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
+		8FC9D5AE1C5040790010B0B9 /* OTMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConstants.swift; sourceTree = "<group>"; };
+		8FC9D5B01C5040B30010B0B9 /* OTMClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMClient.swift; sourceTree = "<group>"; };
+		8FC9D5B21C5041160010B0B9 /* OTMConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConvenience.swift; sourceTree = "<group>"; };
+		8FC9D5BF1C5076BE0010B0B9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		8FC9D5C11C5076E80010B0B9 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +49,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FC9D5C21C5076E80010B0B9 /* FBSDKLoginKit.framework in Frameworks */,
+				8FC9D5C01C5076BE0010B0B9 /* FBSDKCoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +60,7 @@
 		8FC9D5771C4F35B10010B0B9 = {
 			isa = PBXGroup;
 			children = (
+				8FC9D5BE1C5076820010B0B9 /* Frameworks */,
 				8FC9D5821C4F35B10010B0B9 /* On the Map */,
 				8FC9D5811C4F35B10010B0B9 /* Products */,
 			);
@@ -54,14 +77,71 @@
 		8FC9D5821C4F35B10010B0B9 /* On the Map */ = {
 			isa = PBXGroup;
 			children = (
-				8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */,
-				8FC9D5851C4F35B10010B0B9 /* ViewController.swift */,
-				8FC9D5871C4F35B10010B0B9 /* Main.storyboard */,
 				8FC9D58A1C4F35B10010B0B9 /* Assets.xcassets */,
-				8FC9D58C1C4F35B10010B0B9 /* LaunchScreen.storyboard */,
 				8FC9D58F1C4F35B10010B0B9 /* Info.plist */,
+				8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */,
+				8FC9D5871C4F35B10010B0B9 /* Main.storyboard */,
+				8FC9D58C1C4F35B10010B0B9 /* LaunchScreen.storyboard */,
+				8FC9D59B1C5034A80010B0B9 /* Supporting Files */,
+				8FC9D59A1C5034770010B0B9 /* Assets */,
+				8FC9D5991C5033EA0010B0B9 /* Controller */,
+				8FC9D5951C5033980010B0B9 /* Model */,
 			);
 			path = "On the Map";
+			sourceTree = "<group>";
+		};
+		8FC9D5951C5033980010B0B9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8FC9D5961C5033A70010B0B9 /* Client */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		8FC9D5961C5033A70010B0B9 /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				8FC9D5AC1C5040570010B0B9 /* StudentLocation.swift */,
+				8FC9D5B01C5040B30010B0B9 /* OTMClient.swift */,
+				8FC9D5A61C50400A0010B0B9 /* OTMAuthViewController.swift */,
+				8FC9D5AE1C5040790010B0B9 /* OTMConstants.swift */,
+				8FC9D5B21C5041160010B0B9 /* OTMConvenience.swift */,
+			);
+			name = Client;
+			sourceTree = "<group>";
+		};
+		8FC9D5991C5033EA0010B0B9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8FC9D5851C4F35B10010B0B9 /* LoginViewController.swift */,
+				8FC9D59C1C5034FF0010B0B9 /* StudentDetailsViewController.swift */,
+				8FC9D59E1C5035220010B0B9 /* ListViewController.swift */,
+				8FC9D5A01C5035320010B0B9 /* MapViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		8FC9D59A1C5034770010B0B9 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		8FC9D59B1C5034A80010B0B9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8FC9D5BE1C5076820010B0B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8FC9D5C11C5076E80010B0B9 /* FBSDKLoginKit.framework */,
+				8FC9D5BF1C5076BE0010B0B9 /* FBSDKCoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,8 +216,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8FC9D5861C4F35B10010B0B9 /* ViewController.swift in Sources */,
+				8FC9D5861C4F35B10010B0B9 /* LoginViewController.swift in Sources */,
+				8FC9D5B11C5040B30010B0B9 /* OTMClient.swift in Sources */,
+				8FC9D5AF1C5040790010B0B9 /* OTMConstants.swift in Sources */,
 				8FC9D5841C4F35B10010B0B9 /* AppDelegate.swift in Sources */,
+				8FC9D59F1C5035220010B0B9 /* ListViewController.swift in Sources */,
+				8FC9D5A11C5035320010B0B9 /* MapViewController.swift in Sources */,
+				8FC9D5B31C5041160010B0B9 /* OTMConvenience.swift in Sources */,
+				8FC9D59D1C5034FF0010B0B9 /* StudentDetailsViewController.swift in Sources */,
+				8FC9D5A71C50400A0010B0B9 /* OTMAuthViewController.swift in Sources */,
+				8FC9D5AD1C5040570010B0B9 /* StudentLocation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +336,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "On the Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shanrao.On-the-Map";
@@ -259,6 +351,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "On the Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shanrao.On-the-Map";
@@ -285,6 +381,7 @@
 				8FC9D5941C4F35B10010B0B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
