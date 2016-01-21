@@ -33,8 +33,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        //let paddingView = UIView(frame: CGRectMake(0, 0, 15, self.emailTextField.frame.height))
+        //emailTextField.leftView = paddingView
+        //emailTextField.leftViewMode = UITextFieldViewMode.Always
+        //let paddingView = UIView(frame: CGRectMake(0, 0, 15, self.passwordTextField.frame.height))
+        //passwordTextField.leftView = paddingView
+        //passwordTextField.leftViewMode = UITextFieldViewMode.Always
         debugTextLabel.hidden = true
+
     }
     
     // MARK: View settings
@@ -42,15 +48,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     
     // MARK: Text Field Methods
-    
-    
-    func textFieldDidBeginEditing(textField: UITextField) {
-        if textField.clearsOnBeginEditing {
-            textField.text = ""
-            textField.borderStyle=UITextBorderStyle.None
-            textField.clearsOnBeginEditing = false
-        }
-    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         print("textFieldShouldReturn")
@@ -76,7 +73,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        //if emailTextField.isFirstResponder() {
+        //if passwordTextField.isFirstResponder() {
         //    view.frame.origin.y = -getKeyboardHeight(notification)
         //}
     }
@@ -104,7 +101,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             OTMClient.sharedInstance().postSession(emailTextField.text!, password: passwordTextField.text!) { (success, errorString) in
                 if success == true {
                     print("Logged in")
-                    self.debugTextLabel.hidden = true
+                    self.completeLogin()
                 } else {
                     print("Failed login")
                     self.debugTextLabel.hidden = false
@@ -121,6 +118,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginFacebookTouchUpInside(sender: AnyObject) {
     }
     
+    // MARK: Convenience methods
+    
+    func completeLogin() {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.debugTextLabel.text = ""
+            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
+            self.presentViewController(controller, animated: true, completion: nil)
+        })
+    }
     
 }
+
+
 
