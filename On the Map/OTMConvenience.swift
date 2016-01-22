@@ -12,7 +12,7 @@ import Foundation
 
 extension OTMClient {
     
-    // MARK: POSTing (Creating) a Session
+    // MARK: UDACITY - POSTing (Creating) a Session
     
     func postSession(username: String, password: String, completionHandler: (success: Bool, error: NSError?) -> Void) {
         
@@ -24,7 +24,7 @@ extension OTMClient {
         ]
         
         /* 2. Make the request */
-        taskForPOSTMethod(method, jsonBody: jsonBody) { JSONResult, error in
+        taskForPOSTMethod(method, baseURLSecure: OTMClient.Constants.UdacityBaseURLSecure, headers: nil, jsonBody: jsonBody) { JSONResult, error in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
@@ -43,7 +43,7 @@ extension OTMClient {
         }
     }
     
-    // MARK: DELETEing (Logging Out Of) a Session
+    // MARK: UDACITY - DELETEing (Logging Out Of) a Session
     
     func deleteSession(completionHandler: (success: Bool, error: NSError?) -> Void) {
         
@@ -74,6 +74,43 @@ extension OTMClient {
         }
     }
     
+    // MARK: PARSE - GETting StudentLocations
+    
+    func getStudentLocations(completionHandler: (result: [StudentLocation]?, error: NSError?) -> Void) -> [StudentLocation]{
+        
+        var studentLocations = [StudentLocation]()
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let method : String = Methods.ParseGetStudentLocations
+        let headers : [String:String] = [OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID, OTMClient.HeaderKeys.ParseRESTAPIKey: OTMClient.Constants.RESTApiKey]
+        
+        /* 2. Make the request */
+        taskForGETMethod(method, baseURLSecure: OTMClient.Constants.ParseBaseURLSecure, headers: headers) { JSONResult, error in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandler(result: nil, error: error)
+            } else {
+                
+                if let results = JSONResult["results"] as? [[String : AnyObject]] {
+                    print("*******results******")
+                    print(results)
+                    
+                    studentLocations = StudentLocation.arrayFromResults(results)
+                    print("*******studentLocations******")
+                    print(studentLocations)
+                    
+                    completionHandler(result: studentLocations, error: nil)
+                    
+                } else {
+                    completionHandler(result: nil, error: NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations results"]))
+                }
+            }
+        }
+        return studentLocations
+    }
+}
+
     // MARK: GETing Public User Data
    /*
     func getUserData(userID: String, completionHandler: (result: [StudentLocation]?, error: NSError?) -> Void) -> NSURLSessionDataTask? {
@@ -356,5 +393,4 @@ extension OTMClient {
     
     */
 
-    
-}
+

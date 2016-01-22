@@ -34,6 +34,10 @@ extension OTMClient {
         static let UdacityPostSession = "session"
         static let UdacityDeleteSession = "session"
         
+        // MARK: Parse
+        static let ParseGetStudentLocations = ""
+        static let ParsePostStudentLocations = ""
+        
     }
     
     // MARK: URL Keys
@@ -47,11 +51,22 @@ extension OTMClient {
     struct ParameterKeys {
         
         static let UserID = "id"
+        static let Limit = "limit"
+        static let Skip = "skip"
+        static let UpdatedAtDefault = "updatedAt"
+        static let UpdatedAtReverse = "-updatedAt"
         
+    }
+    
+    struct HeaderKeys {
+        
+        static let ParseAppID = "X-Parse-Application-Id"
+        static let ParseRESTAPIKey = "X-Parse-REST-API-Key"
     }
     
     // MARK: JSON Body Keys
     struct JSONBodyKeys {
+        
         static let Udacity = "udacity"
         static let Username = "username"
         static let Password = "password"
@@ -59,24 +74,6 @@ extension OTMClient {
     
     // MARK: JSON Response Keys
     struct JSONResponseKeys {
-        
-        // MARK: General
-        static let StatusMessage = "status_message"
-        static let StatusCode = "status_code"
-        
-        // MARK: Authorization
-        static let RequestToken = "request_token"
-        static let SessionID = "session_id"
-        
-        // MARK: Account
-        static let UserID = "id"
-        
-        // MARK: Config
-        static let ConfigBaseImageURL = "base_url"
-        static let ConfigSecureBaseImageURL = "secure_base_url"
-        static let ConfigImages = "images"
-        static let ConfigPosterSizes = "poster_sizes"
-        static let ConfigProfileSizes = "profile_sizes"
         
         // MARK: StudentLocation
         static let objectId = "8ZExGR5uX8"
@@ -89,7 +86,7 @@ extension OTMClient {
         static let longitude = "-122.065"
         static let createdAt = "Feb 25, 2015, 01:10"
         static let updatedAt = "Mar 09, 2015, 23:34"
-        static let studentResults = ["results"]
+        static let studentResults = "results"
         
     }
     

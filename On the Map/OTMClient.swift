@@ -28,23 +28,25 @@ class OTMClient : NSObject {
     
     // MARK: GET
     
-    func taskForGETMethod(method: String, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    func taskForGETMethod(method: String, baseURLSecure: String, headers: [String:String]?, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
         /* 1. Set the parameters */
         
         
         /* 2/3. Build the URL and configure the request */
       
-        var baseURLSecure = "https://"
-        switch method {
-        case OTMClient.Methods.UdacityPostSession:
-            baseURLSecure = Constants.UdacityBaseURLSecure
-        default:
-            baseURLSecure = Constants.ParseBaseURLSecure
-        }
         let urlString = baseURLSecure + method
         let url = NSURL(string: urlString)!
-        let request = NSURLRequest(URL: url)
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "GET"
+        if let headers = headers {
+            for (key, value) in headers {
+                request.addValue(value, forHTTPHeaderField: key)
+            }
+        } else {
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
         
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
@@ -85,26 +87,30 @@ class OTMClient : NSObject {
     
     // MARK: POST
     
-    func taskForPOSTMethod(method: String, jsonBody: [String:AnyObject], completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    func taskForPOSTMethod(method: String, baseURLSecure: String, headers: [String:String]?, jsonBody: [String:AnyObject]?, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
         /* 1. Set the parameters */
         
         /* 2/3. Build the URL and configure the request */
-        var baseURLSecure = "https://"
-        switch method {
-        case OTMClient.Methods.UdacityPostSession:
-            baseURLSecure = Constants.UdacityBaseURLSecure
-        default:
-            baseURLSecure = Constants.ParseBaseURLSecure
-        }
         let urlString = baseURLSecure + method
         let url = NSURL(string: urlString)!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        do {
-            request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
+        if let headers = headers {
+            for (key, value) in headers {
+                request.addValue(value, forHTTPHeaderField: key)
+            }
+        } else {
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        
+        if let jsonBody = jsonBody {
+            do {
+                request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
+            }
+        } else {
+            // Do nothing
         }
         
         /* 4. Make the request */

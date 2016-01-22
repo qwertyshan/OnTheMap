@@ -40,7 +40,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //passwordTextField.leftView = paddingView
         //passwordTextField.leftViewMode = UITextFieldViewMode.Always
         debugTextLabel.hidden = true
-
+        //********* For testing only ************//
+        emailTextField.text = ""
+        passwordTextField.text = ""
     }
     
     // MARK: View settings
@@ -107,7 +109,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.debugTextLabel.hidden = false
                     self.debugTextLabel.text = "Login failed"
                 }
-                
             }
         }
     }

@@ -9,12 +9,13 @@
 import Foundation
 
 class StudentLocation: NSObject {
+    
     var objectId: String?
     var uniqueKey: String?
-    var firstName: String
-    var lastName: String
-    var mapString: String
-    var mediaURL: String
+    var firstName: String?
+    var lastName: String?
+    var mapString: String?
+    var mediaURL: String?
     var latitude: Float?
     var longitude: Float?
     var createdAt: String?
@@ -27,29 +28,18 @@ class StudentLocation: NSObject {
         
         objectId = dictionary[OTMClient.JSONResponseKeys.objectId] as? String
         uniqueKey = dictionary[OTMClient.JSONResponseKeys.uniqueKey] as? String
-        firstName = dictionary[OTMClient.JSONResponseKeys.firstName] as! String
-        lastName = dictionary[OTMClient.JSONResponseKeys.lastName] as! String
-        mapString = dictionary[OTMClient.JSONResponseKeys.mapString] as! String
-        mediaURL = dictionary[OTMClient.JSONResponseKeys.mediaURL] as! String
-        longitude = Float(dictionary[OTMClient.JSONResponseKeys.longitude as String] as! String)
-        latitude = Float(dictionary[OTMClient.JSONResponseKeys.latitude as String] as! String)
+        firstName = dictionary[OTMClient.JSONResponseKeys.firstName] as? String
+        lastName = dictionary[OTMClient.JSONResponseKeys.lastName] as? String
+        mapString = dictionary[OTMClient.JSONResponseKeys.mapString] as? String
+        mediaURL = dictionary[OTMClient.JSONResponseKeys.mediaURL] as? String
+        longitude = dictionary[OTMClient.JSONResponseKeys.longitude] as? Float
+        latitude = dictionary[OTMClient.JSONResponseKeys.latitude] as? Float
         createdAt = dictionary[OTMClient.JSONResponseKeys.createdAt] as? String
         updatedAt = dictionary[OTMClient.JSONResponseKeys.updatedAt] as? String
     }
     
-    // Initialize a StudentLocation object
-    init(uniqueKey: String, firstName: String, lastName: String, mapString: String, mediaURL: String, longitude: Float, latitude: Float) {
-        self.uniqueKey = uniqueKey
-        self.firstName = firstName
-        self.lastName = lastName
-        self.mapString = mapString
-        self.mediaURL = mediaURL
-        self.longitude = longitude
-        self.latitude = latitude
-    }
-    
     // Helper: Given an array of dictionaries, convert them to an array of StudentLocation objects
-    static func studentsFromResults(results: [[String : AnyObject]]) -> [StudentLocation] {
+    static func arrayFromResults(results: [[String : AnyObject]]) -> [StudentLocation] {
         var studentLocations = [StudentLocation]()
         
         for result in results {
@@ -58,4 +48,16 @@ class StudentLocation: NSObject {
         
         return studentLocations
     }
+
+    class func sharedInstance() -> [StudentLocation] {
+        
+        struct Singleton {
+            static var sharedInstance = [StudentLocation]()
+        }
+        
+        return Singleton.sharedInstance
+    }
+    
 }
+
+
