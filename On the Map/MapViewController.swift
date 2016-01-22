@@ -28,66 +28,69 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     
-    var locations: [StudentLocation] = []
+    var locations: [StudentLocation]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // The "locations" array is an array of dictionary objects that are similar to the JSON
-        // data that you can download from parse.
-        
-        locations = OTMClient.sharedInstance().getStudentLocations() { (result, errorString) in
-            print("Called getStudentLocations. Error: \(errorString). Result: \(result)")
-            if result != nil {
-                print("Got student data")
-                print("*******result******")
-                print(result)
-                print("*******end of result******")
-            } else {
-                print("Could not get student data")
-            }
-        }
-        
-        print("*******locations******")
-        print(locations)
-        print("*******end of locations******")
-        
         
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
         var annotations = [MKPointAnnotation]()
         
+        // The "locations" array is an array of dictionary objects that are similar to the JSON
+        // data that you can download from parse.
+        
+        OTMClient.sharedInstance().getStudentLocations() { (result, errorString) in
+            print("Called getStudentLocations. Error: \(errorString). Result: \(result)")
+            if result != nil {
+                print("Got student data")
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.locations = result!
+                }
+            } else {
+                print("Could not get student data")
+            }
+        }
+        
         // The "locations" array is loaded with the sample data below. We are using the dictionaries
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
-        
-        for dictionary in locations {
+    
+        if let locations = locations {
+            print("*******locations in MapViewController******")
+            print(locations)
+            print("*******end of locations******")
             
-            print("*******dictionary******")
-            print(dictionary)
-            
-            // Notice that the float values are being used to create CLLocationDegree values.
-            // This is a version of the Double type.
-            let lat = CLLocationDegrees(dictionary.latitude! as Float)
-            let long = CLLocationDegrees(dictionary.longitude! as Float)
-            
-            // The lat and long are used to create a CLLocationCoordinates2D instance.
-            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-            let first = dictionary.firstName! as String
-            let last = dictionary.lastName! as String
-            let mediaURL = dictionary.mediaURL! as String
-            
-            // Here we create the annotation and set its coordiate, title, and subtitle properties
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "\(first) \(last)"
-            annotation.subtitle = mediaURL
-            
-            // Finally we place the annotation in an array of annotations.
-            annotations.append(annotation)
+            for dictionary in locations {
+                
+                print("*******dictionary in MapViewController******")
+                print(dictionary)
+                
+                // Notice that the float values are being used to create CLLocationDegree values.
+                // This is a version of the Double type.
+                let lat = CLLocationDegrees(dictionary.latitude! as Float)
+                let long = CLLocationDegrees(dictionary.longitude! as Float)
+                
+                // The lat and long are used to create a CLLocationCoordinates2D instance.
+                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                
+                let first = dictionary.firstName! as String
+                let last = dictionary.lastName! as String
+                let mediaURL = dictionary.mediaURL! as String
+                
+                // Here we create the annotation and set its coordiate, title, and subtitle properties
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                annotation.title = "\(first) \(last)"
+                annotation.subtitle = mediaURL
+                
+                // Finally we place the annotation in an array of annotations.
+                annotations.append(annotation)
+            }
+        } else {
+            print("locations is nil")
         }
-        
+    
         // When the array is complete, we add the annotations to the map.
         self.mapView.addAnnotations(annotations)
         

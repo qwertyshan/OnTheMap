@@ -21,6 +21,10 @@ class StudentLocation: NSObject {
     var createdAt: String?
     var updatedAt: String?
     
+    static let sharedInstance = StudentLocation()
+    
+    var studentArray = [StudentLocation]()
+    
     // MARK: Initializers
     
     // Construct a StudentLocation from a dictionary 
@@ -38,6 +42,19 @@ class StudentLocation: NSObject {
         updatedAt = dictionary[OTMClient.JSONResponseKeys.updatedAt] as? String
     }
     
+    override init() {
+        objectId = nil
+        uniqueKey = nil
+        firstName = nil
+        lastName = nil
+        mapString = nil
+        mediaURL = nil
+        longitude = nil
+        latitude = nil
+        createdAt = nil
+        updatedAt = nil 
+    }
+    
     // Helper: Given an array of dictionaries, convert them to an array of StudentLocation objects
     static func arrayFromResults(results: [[String : AnyObject]]) -> [StudentLocation] {
         var studentLocations = [StudentLocation]()
@@ -48,16 +65,6 @@ class StudentLocation: NSObject {
         
         return studentLocations
     }
-
-    class func sharedInstance() -> [StudentLocation] {
-        
-        struct Singleton {
-            static var sharedInstance = [StudentLocation]()
-        }
-        
-        return Singleton.sharedInstance
-    }
-    
 }
 
 

@@ -76,7 +76,7 @@ extension OTMClient {
     
     // MARK: PARSE - GETting StudentLocations
     
-    func getStudentLocations(completionHandler: (result: [StudentLocation]?, error: NSError?) -> Void) -> [StudentLocation]{
+    func getStudentLocations(completionHandler: (result: [StudentLocation]?, error: NSError?) -> Void) -> Void {
         
         var studentLocations = [StudentLocation]()
         
@@ -93,21 +93,23 @@ extension OTMClient {
             } else {
                 
                 if let results = JSONResult["results"] as? [[String : AnyObject]] {
-                    print("*******results******")
-                    print(results)
+                    //print("*******results in convenience function******")
+                    //print(results)
                     
-                    studentLocations = StudentLocation.arrayFromResults(results)
-                    print("*******studentLocations******")
-                    print(studentLocations)
+                    let studentLocations = StudentLocation.sharedInstance
+                    studentLocations.studentArray = StudentLocation.arrayFromResults(results)
+                    print("*******studentLocations in convenience function******")
+                    print(studentLocations.studentArray)
+                    print("*******END OF studentLocations in convenience function******")
                     
-                    completionHandler(result: studentLocations, error: nil)
+                    
+                    completionHandler(result: studentLocations.studentArray, error: nil)
                     
                 } else {
                     completionHandler(result: nil, error: NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations results"]))
                 }
             }
         }
-        return studentLocations
     }
 }
 

@@ -76,17 +76,16 @@ extension OTMClient {
     struct JSONResponseKeys {
         
         // MARK: StudentLocation
-        static let objectId = "8ZExGR5uX8"
-        static let uniqueKey = "1234"
-        static let firstName = "Shantanu"
-        static let lastName = "Rao"
-        static let mapString = "Walnut Creek, CA"
-        static let mediaURL = "http://www.shanrao.org"
-        static let latitude = "37.906389"
-        static let longitude = "-122.065"
-        static let createdAt = "Feb 25, 2015, 01:10"
-        static let updatedAt = "Mar 09, 2015, 23:34"
-        static let studentResults = "results"
+        static let createdAt = "createdAt"
+        static let firstName = "firstName"
+        static let lastName = "lastName"
+        static let latitude = "latitude"
+        static let longitude = "longitude"
+        static let mapString = "mapString"
+        static let mediaURL = "mediaURL"
+        static let objectId = "objectId"
+        static let uniqueKey = "uniqueKey"
+        static let updatedAt = "updatedAt"
         
     }
     
