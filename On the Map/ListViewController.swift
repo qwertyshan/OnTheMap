@@ -23,14 +23,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        getLocationsForMap ()   // Get locations from Parse and set local studentLocations array
         tableView.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        getLocationsForMap ()   // Get locations from Parse and set local studentLocations array
+        //getLocationsForMap ()   // Get locations from Parse and set local studentLocations array
     }
     
     // MARK: - IBActions

@@ -41,7 +41,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        getLocationsForMap ()   // Get locations from Parse and set them on map annotations
+        //getLocationsForMap ()   // Get locations from Parse and set them on map annotations
     }
     
     // MARK: - IBActions
