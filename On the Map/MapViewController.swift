@@ -9,18 +9,6 @@
 import UIKit
 import MapKit
 
-/**
- * This view controller demonstrates the objects involved in displaying pins on a map.
- *
- * The map is a MKMapView.
- * The pins are represented by MKPointAnnotation instances.
- *
- * The view controller conforms to the MKMapViewDelegate so that it can receive a method
- * invocation when a pin annotation is tapped. It accomplishes this using two delegate
- * methods: one to put a small "info" button on the right side of each pin, and one to
- * respond when the "info" button is tapped.
- */
-
 class MapViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: - IBOutlets
@@ -36,12 +24,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         getLocationsForMap ()   // Get locations from Parse and set them on map annotations
         mapView.delegate = self
+
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        //getLocationsForMap ()   // Get locations from Parse and set them on map annotations
     }
     
     // MARK: - IBActions
@@ -59,12 +46,38 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
+    @IBAction func logoutOnTouchUp(sender: AnyObject) {
+        
+        // Check which auth service was used to log in
+        
+        if OTMClient.sharedInstance().authServiceUsed == OTMClient.AuthService.Facebook {
+            
+            FBSDKLoginManager().logOut()
+            print("Facebook logout")
+            dismissViewControllerAnimated(true, completion: nil)
+            
+        } else {    // if Udacity was used to log in
+        
+            OTMClient.sharedInstance().deleteSession() { (success, errorString) in
+                
+                print("MapViewController -> Called deleteSession. Error: \(errorString).") // debug
+                
+                if success {
+                    print("Session Deleted")
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                } else {
+                    print("Could not delete/logout session.")
+                    
+                    let alert = UIAlertController(title: "Error", message: "Could not delete/logout session.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                    self.presentViewController(alert, animated: true, completion: nil);
+                }
+            }
+        }
+    }
     
-    // MARK: - MKMapViewDelegate
-    
-    // Here we create a view with a "right callout accessory view". You might choose to look into other
-    // decoration alternatives. Notice the similarity between this method and the cellForRowAtIndexPath
-    // method in TableViewDataSource.
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
@@ -84,9 +97,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         return pinView
     }
     
-    
-    // This delegate method is implemented to respond to taps. It opens the system browser
-    // to the URL specified in the annotationViews subtitle property.
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.sharedApplication()
@@ -95,44 +105,35 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    //    func mapView(mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-    //
-    //        if control == annotationView.rightCalloutAccessoryView {
-    //            let app = UIApplication.sharedApplication()
-    //            app.openURL(NSURL(string: annotationView.annotation.subtitle))
-    //        }
-    //    }
-    
     
     // MARK: - Helper functions
     
     func getLocationsForMap () {
         
-        OTMClient.sharedInstance().getStudentLocations() { (result, errorString) in
+        OTMClient.sharedInstance().getStudentLocations() { (success, errorString) in
             
             print("MapViewController -> Called getStudentLocations. Error: \(errorString).") // debug 
             
-            if result != nil {
+            if success {
                 print("Got student data")
                 dispatch_async(dispatch_get_main_queue()) {
-                    let locations = result!
-                    self.setLocationsOnMap(locations)
+                    self.setLocationsOnMap()
                 }
             } else {
                 print("Could not get student data")
+                
+                let alert = UIAlertController(title: "Error", message: "Could not get student data.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                self.presentViewController(alert, animated: true, completion: nil);
             }
         }
     }
     
-    func setLocationsOnMap (locations: [StudentLocation]) {
+    func setLocationsOnMap () {
         
         var annotations = [MKPointAnnotation]()
-        
-        // The "locations" array is loaded with the sample data below. We are using the dictionaries
-        // to create map annotations. This would be more stylish if the dictionaries were being
-        // used to create custom structs. Perhaps StudentLocation structs.
             
-        for location in locations {
+        for location in StudentLocation.sharedInstance.studentArray {
             
             // Notice that the float values are being used to create CLLocationDegree values.
             // This is a version of the Double type.

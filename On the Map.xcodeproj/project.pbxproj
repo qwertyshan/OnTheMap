@@ -19,7 +19,6 @@
 		8FC9D59D1C5034FF0010B0B9 /* StudentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D59C1C5034FF0010B0B9 /* StudentDetailsViewController.swift */; };
 		8FC9D59F1C5035220010B0B9 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D59E1C5035220010B0B9 /* ListViewController.swift */; };
 		8FC9D5A11C5035320010B0B9 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5A01C5035320010B0B9 /* MapViewController.swift */; };
-		8FC9D5A71C50400A0010B0B9 /* OTMAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5A61C50400A0010B0B9 /* OTMAuthViewController.swift */; };
 		8FC9D5AD1C5040570010B0B9 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5AC1C5040570010B0B9 /* StudentLocation.swift */; };
 		8FC9D5AF1C5040790010B0B9 /* OTMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5AE1C5040790010B0B9 /* OTMConstants.swift */; };
 		8FC9D5B11C5040B30010B0B9 /* OTMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5B01C5040B30010B0B9 /* OTMClient.swift */; };
@@ -32,6 +31,7 @@
 		8F8B0DCE1C535CE7002C1EF2 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		8F8B0DCF1C535CE7002C1EF2 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		8F8B0DD01C535CE7002C1EF2 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
+		8F8B0DD51C53AC0F002C1EF2 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "../Bridging-Header.h"; sourceTree = "<group>"; };
 		8FC9D5801C4F35B10010B0B9 /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8FC9D5851C4F35B10010B0B9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -42,7 +42,6 @@
 		8FC9D59C1C5034FF0010B0B9 /* StudentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentDetailsViewController.swift; sourceTree = "<group>"; };
 		8FC9D59E1C5035220010B0B9 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		8FC9D5A01C5035320010B0B9 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		8FC9D5A61C50400A0010B0B9 /* OTMAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMAuthViewController.swift; sourceTree = "<group>"; };
 		8FC9D5AC1C5040570010B0B9 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		8FC9D5AE1C5040790010B0B9 /* OTMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConstants.swift; sourceTree = "<group>"; };
 		8FC9D5B01C5040B30010B0B9 /* OTMClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMClient.swift; sourceTree = "<group>"; };
@@ -84,6 +83,7 @@
 		8FC9D5821C4F35B10010B0B9 /* On the Map */ = {
 			isa = PBXGroup;
 			children = (
+				8F8B0DD51C53AC0F002C1EF2 /* Bridging-Header.h */,
 				8FC9D58A1C4F35B10010B0B9 /* Assets.xcassets */,
 				8FC9D58F1C4F35B10010B0B9 /* Info.plist */,
 				8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */,
@@ -110,7 +110,6 @@
 			children = (
 				8FC9D5AC1C5040570010B0B9 /* StudentLocation.swift */,
 				8FC9D5B01C5040B30010B0B9 /* OTMClient.swift */,
-				8FC9D5A61C50400A0010B0B9 /* OTMAuthViewController.swift */,
 				8FC9D5AE1C5040790010B0B9 /* OTMConstants.swift */,
 				8FC9D5B21C5041160010B0B9 /* OTMConvenience.swift */,
 			);
@@ -238,7 +237,6 @@
 				8FC9D5A11C5035320010B0B9 /* MapViewController.swift in Sources */,
 				8FC9D5B31C5041160010B0B9 /* OTMConvenience.swift in Sources */,
 				8FC9D59D1C5034FF0010B0B9 /* StudentDetailsViewController.swift in Sources */,
-				8FC9D5A71C50400A0010B0B9 /* OTMAuthViewController.swift in Sources */,
 				8FC9D5AD1C5040570010B0B9 /* StudentLocation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,6 +356,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shanrao.On-the-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -373,6 +372,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shanrao.On-the-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 			};
 			name = Release;
 		};

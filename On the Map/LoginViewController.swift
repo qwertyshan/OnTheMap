@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 // MARK: - LoginViewController: UIViewController
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
     
     // MARK: Outlets
 
@@ -18,97 +20,62 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
-    @IBOutlet weak var loginFacebookButton: UIButton!
-    @IBOutlet weak var debugTextLabel: UILabel!
+    @IBOutlet weak var loginFacebookButton: FBSDKLoginButton!
     
     // MARK: View load functions
     
-    override func viewWillAppear(animated: Bool) {
-        subscribeToKeyboardNotifications()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        unsubscribeFromKeyboardNotifications()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //let paddingView = UIView(frame: CGRectMake(0, 0, 15, self.emailTextField.frame.height))
-        //emailTextField.leftView = paddingView
-        //emailTextField.leftViewMode = UITextFieldViewMode.Always
-        //let paddingView = UIView(frame: CGRectMake(0, 0, 15, self.passwordTextField.frame.height))
-        //passwordTextField.leftView = paddingView
-        //passwordTextField.leftViewMode = UITextFieldViewMode.Always
-        debugTextLabel.hidden = true
-        //********* For testing only ************//
-        emailTextField.text = "rao.shantanu@gmail.com"
-        passwordTextField.text = "january1"
+        loginFacebookButton.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(false)
+        checkFacebookLoginStatus()
     }
     
     // MARK: View settings
     
-
+    func checkFacebookLoginStatus () {
+        
+        // Facebook login
+        if (FBSDKAccessToken.currentAccessToken() != nil) {
+            // User is already logged in
+            print("User Logged In. Access token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
+            completeLogin(OTMClient.AuthService.Facebook)
+        } else {
+            loginFacebookButton.readPermissions = ["email"]
+        }
+    }
     
     // MARK: Text Field Methods
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        print("textFieldShouldReturn")
+        view.endEditing(true)
         textField.resignFirstResponder()
         return true
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        print("textFieldDidEndEditing")
         textField.resignFirstResponder()
-    }
-    
-    // MARK: Keyboard notification methods
-    
-    func subscribeToKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    func unsubscribeFromKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:
-            UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        //if passwordTextField.isFirstResponder() {
-        //    view.frame.origin.y = -getKeyboardHeight(notification)
-        //}
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        view.frame.origin.y = 0
-    }
-    
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.CGRectValue().height
     }
 
     // MARK: Actions
     
     @IBAction func loginTouchUpInside(sender: AnyObject) {
-        if emailTextField.text!.isEmpty {
-            debugTextLabel.hidden = false
-            debugTextLabel.text = "Email empty"
-        } else if passwordTextField.text!.isEmpty {
-            debugTextLabel.hidden = false
-            debugTextLabel.text = "Password empty"
-        } else {
-            OTMClient.sharedInstance().postSession(emailTextField.text!, password: passwordTextField.text!) { (success, errorString) in
-                if success == true {
-                    print("Logged in")
-                    self.completeLogin()
-                } else {
-                    print("Failed login")
-                    self.debugTextLabel.hidden = false
-                    self.debugTextLabel.text = "Login failed"
-                }
+        OTMClient.sharedInstance().postSession(emailTextField.text!, password: passwordTextField.text!) { (success, errorString) in
+            if success == true {
+                print("Logged in")
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.completeLogin(OTMClient.AuthService.Udacity)
+                })
+            } else {
+                print("Failed login")
+                let alert = UIAlertController(title: "Error", message: errorString?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                self.presentViewController(alert, animated: true, completion: nil)
             }
         }
     }
@@ -120,20 +87,39 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         app.openURL(toOpen!)
     }
     
-    @IBAction func loginFacebookTouchUpInside(sender: AnyObject) {
-    }
-    
     // MARK: Convenience methods
     
-    func completeLogin() {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.debugTextLabel.text = ""
-            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
-            self.presentViewController(controller, animated: true, completion: nil)
-        })
+    func completeLogin(service: OTMClient.AuthService) {
+        
+        OTMClient.sharedInstance().authServiceUsed = service
+        let controller = storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
+        presentViewController(controller, animated: true, completion: nil)
+        
     }
     
+    // MARK: Facebook login delegate methods
+    
+    func loginButton(loginFacebookButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        if ((error) != nil) {
+            print("Failed Facebook login")
+            let alert = UIAlertController(title: "Error", message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        else if result.isCancelled {
+            print("Cancelled Facebook login")
+        }
+        else {
+            if result.grantedPermissions.contains("email")
+            {
+                completeLogin(OTMClient.AuthService.Facebook)
+                print("Successful Facebook login")
+            }
+        }
+    }
+    
+    func loginButtonDidLogOut(loginFacebookButton: FBSDKLoginButton!) {
+        print("User Logged Out")
+    }
 }
-
-
 

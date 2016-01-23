@@ -15,6 +15,9 @@ class OTMClient : NSObject {
     /* Shared session */
     var session: NSURLSession
     
+    /* Authentication service */
+    var authServiceUsed: AuthService?
+    
     /* Authentication state */
     var sessionID : String? = nil
     var userID : Int? = nil

@@ -12,9 +12,9 @@ import CoreLocation
 
 // MARK: - StudentDetailsViewController: UIViewController
 
-class StudentDetailsViewController: UIViewController {
+class StudentDetailsViewController: UIViewController, UITextFieldDelegate {
     
-    var studentLocation = StudentLocation()
+    var studentLocation = StudentLocation.sharedInstance
     
     enum viewState {
         case One
@@ -31,6 +31,7 @@ class StudentDetailsViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var topView2: UIView!
     @IBOutlet weak var bottomView2: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBOutlet weak var enterLocationTextField: UITextField!
     @IBOutlet weak var enterURLTextField: UITextField!
@@ -42,60 +43,90 @@ class StudentDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
+        
+        enterURLTextField.delegate = self
+        enterURLTextField.delegate = self
+        
+        studentLocation.firstName = "Shantanu"
+        studentLocation.lastName = "Rao"
+        
         setViewState(.One)
+        findOnMapButton.layer.cornerRadius = 4
+        submitURLButton.layer.cornerRadius = 4
     }
     
-    // MARK: 
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?){
+        view.endEditing(true)
+        super.touchesBegan(touches, withEvent: event)
+    }
+    
+    // MARK: IBActions
     
     @IBAction func cancelOnTouchUp(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func findOnTouchUp(sender: AnyObject) {
+
+        
         let address = enterLocationTextField.text
         
         if let address = address {
             
-            // TODO 1: Geolocate address
-            
-            // TODO 2: If geolocation works
-            
-                // TODO 3: save lat/lon in new StudentLocation object
-            
-                // TODO 4: place pin on map
-            
-                // TODO 5: show viewState.Two
-            
-            // TODO 6: If geolocation fails, show error
+            // Geolocate address
+            let geocoder = CLGeocoder()
+            geocoder.geocodeAddressString(address, completionHandler: {(placemarks, error) -> Void in
+                
+                if let placemark = placemarks?[0] { // If there's a result, pick first location in array
+                    self.studentLocation.latitude = Float(placemark.location!.coordinate.latitude)
+                    self.studentLocation.longitude = Float(placemark.location!.coordinate.longitude)
+                    self.studentLocation.mapString = address
+                    
+                    self.setViewState(viewState.Two)    // Change view
+                    self.activityIndicator.startAnimating() // start activity indicator
+                    
+                    self.mapView.addAnnotation(MKPlacemark(placemark: placemark))   // Place pin on mapView
+                    self.mapView.camera.altitude = 50000.0
+                    self.mapView.setCenterCoordinate(placemark.location!.coordinate, animated: true)
+                    
+                    self.activityIndicator.stopAnimating()  // stop activity indicator
+                    
+                } else if let error = error {
+                    print(error.description)
+                    let alert = UIAlertController(title: "Error", message: error.description, preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                    self.presentViewController(alert, animated: true, completion: nil);
+                    
+                } else {
+                    print("Could not complete geocoding request.")
+                    let alert = UIAlertController(title: "Error", message: "Could not complete geocoding request.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                    self.presentViewController(alert, animated: true, completion: nil);
+                }
+            })
             
         } else {
-            print("No address entered")
-            
-            // TODO 7: Alert if no address provided
+            print("No location entered")
         }
+        
     }
     
     @IBAction func submitOnTouchUp(sender: AnyObject) {
         
-        // TODO 1: check if URL has been provided.
-        
-            // TODO 2: check if if no http:// provided, add it to URL
+        if let url = enterURLTextField.text {
             
-            // TODO 3: update StudentLocation object with URL
+            if !url.hasPrefix("http://") && !url.hasPrefix("https://") {
+                studentLocation.mediaURL = "http://" + url
+            } else {
+                studentLocation.mediaURL = url
+            }
+            postToParse()   // post StudentLocation to Parse
+            self.dismissViewControllerAnimated(true, completion: nil)
             
-            // TODO 4: post StudentLocation object to Parse
-            
-            // TODO 5: If failure, show alert
-        
-            // TODO 6: If success, dismiss controller
-        
-        // TODO 7: If no URL provided, show alert
-        
+        } else {
+            print("No URL entered")
+        }
     }
-    
     
     // MARK: Helper functions
     
@@ -120,6 +151,34 @@ class StudentDetailsViewController: UIViewController {
             mapView.hidden      = false
             topView2.hidden     = false
             bottomView2.hidden  = false
+        }
+    }
+    
+    func postToParse() {
+        
+        print(studentLocation.uniqueKey, studentLocation.firstName, studentLocation.lastName, studentLocation.mapString, studentLocation.mediaURL, studentLocation.latitude, studentLocation.longitude)
+
+        
+        
+        OTMClient.sharedInstance().postStudentLocation(studentLocation) { (success, errorString) in
+            
+            if errorString != nil {
+                print(errorString?.description)
+                let alert = UIAlertController(title: "Error", message: errorString?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                self.presentViewController(alert, animated: true, completion: nil);
+            } else if success {
+                print("StudentLocation posted")
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+            } else {
+                print("Could not post StudentLocation.")
+                
+                let alert = UIAlertController(title: "Error", message: "Could not post location record to Parse.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                self.presentViewController(alert, animated: true, completion: nil);
+            }
         }
     }
 }

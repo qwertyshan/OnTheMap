@@ -12,27 +12,20 @@ import UIKit
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var studentLocations = [StudentLocation]()
-    
     // MARK: - IBOutlets
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var reloadLocations: UIBarButtonItem!
     @IBOutlet weak var addLocation: UIBarButtonItem!
     @IBOutlet weak var logout: UIBarButtonItem!
+    @IBOutlet weak var navBar: UINavigationItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getLocationsForMap ()   // Get locations from Parse and set local studentLocations array
         tableView.delegate = self
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        //getLocationsForMap ()   // Get locations from Parse and set local studentLocations array
-    }
-    
+
     // MARK: - IBActions
     
     // Get locations from Parse and rebuild the table
@@ -42,13 +35,45 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    @IBAction func logoutOnTouchUp(sender: AnyObject) {
+        
+        // Check which auth service was used to log in
+        
+        if OTMClient.sharedInstance().authServiceUsed == OTMClient.AuthService.Facebook {
+            
+            FBSDKLoginManager().logOut()
+            print("Facebook logout")
+            dismissViewControllerAnimated(true, completion: nil)
+            
+        } else {    // if Udacity was used to log in
+            
+            OTMClient.sharedInstance().deleteSession() { (success, errorString) in
+                
+                print("MapViewController -> Called deleteSession. Error: \(errorString).") // debug
+                
+                if success {
+                    print("Session Deleted")
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                } else {
+                    print("Could not delete/logout session.")
+                    
+                    let alert = UIAlertController(title: "Error", message: "Could not logout from Udacity.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
     // MARK: TableView delegate methods
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         /* Get cell type */
         let cellReuseIdentifier = "studentCell"
-        let studentLocation = studentLocations[indexPath.row]
+        let studentLocation = StudentLocation.sharedInstance.studentArray[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier) as UITableViewCell!
         
         /* Set cell defaults */
@@ -64,39 +89,38 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return studentLocations.count
+        return StudentLocation.sharedInstance.studentArray.count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         // Open mediaURL
         let app = UIApplication.sharedApplication()
-        if let toOpen = studentLocations[indexPath.row].mediaURL {
+        if let toOpen = StudentLocation.sharedInstance.studentArray[indexPath.row].mediaURL {
             app.openURL(NSURL(string: toOpen)!)
         }
     }
-  /*
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
-    }
-    */
+
     // MARK: - Helper functions
     
     func getLocationsForMap () {
         
-        OTMClient.sharedInstance().getStudentLocations() { (result, errorString) in
+        OTMClient.sharedInstance().getStudentLocations() { (success, errorString) in
             
             print("ListViewController -> Called getStudentLocations. Error: \(errorString).") // debug
             
-            if result != nil {
+            if success {
                 print("Got student data")
                 dispatch_async(dispatch_get_main_queue()) {
-                    let locations = result!
-                    self.studentLocations = locations
+
                     self.tableView.reloadData()
                 }
             } else {
                 print("Could not get student data")
+                
+                let alert = UIAlertController(title: "Error", message: "Could not get student data.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                self.presentViewController(alert, animated: true, completion: nil)
             }
         }
     }

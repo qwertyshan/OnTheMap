@@ -10,6 +10,12 @@
 
 extension OTMClient {
     
+    // Authentication services
+    enum AuthService {
+        case Udacity
+        case Facebook
+    }
+    
     // MARK: Constants
     struct Constants {
         
@@ -24,7 +30,6 @@ extension OTMClient {
         // MARK: URLs
         static let UdacityBaseURLSecure : String = "https://www.udacity.com/api/"
         static let ParseBaseURLSecure : String = "https://api.parse.com/1/classes/StudentLocation"
-        //static let FBBaseURLSecure : String = "https://www.themoviedb.org/authenticate/"
     }
     
     // MARK: Methods
@@ -36,7 +41,7 @@ extension OTMClient {
         
         // MARK: Parse
         static let ParseGetStudentLocations = ""
-        static let ParsePostStudentLocations = ""
+        static let ParsePostStudentLocation = ""
         
     }
     
