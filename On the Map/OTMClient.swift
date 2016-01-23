@@ -103,6 +103,7 @@ class OTMClient : NSObject {
             for (key, value) in headers {
                 request.addValue(value, forHTTPHeaderField: key)
             }
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         } else {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -116,6 +117,8 @@ class OTMClient : NSObject {
             // Do nothing
         }
         
+        print(request.allHTTPHeaderFields)
+        print(NSString(data: request.HTTPBody!, encoding:NSUTF8StringEncoding)!)
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             

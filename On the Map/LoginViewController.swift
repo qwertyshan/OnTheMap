@@ -91,6 +91,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     
     func completeLogin(service: OTMClient.AuthService) {
         
+        emailTextField.text = ""        // Clear login text fields
+        passwordTextField.text = ""
+        
         OTMClient.sharedInstance().authServiceUsed = service
         let controller = storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
         presentViewController(controller, animated: true, completion: nil)

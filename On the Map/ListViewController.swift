@@ -107,8 +107,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         OTMClient.sharedInstance().getStudentLocations() { (success, errorString) in
             
-            print("ListViewController -> Called getStudentLocations. Error: \(errorString).") // debug
-            
+            if errorString != nil {
+                print("ListViewController -> Called getStudentLocations. Error: \(errorString).") // debug
+                
+                let alert = UIAlertController(title: "Error", message: errorString?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                self.presentViewController(alert, animated: true, completion: nil);
+            }
             if success {
                 print("Got student data")
                 dispatch_async(dispatch_get_main_queue()) {

@@ -107,13 +107,13 @@ extension OTMClient {
         let method : String = Methods.ParsePostStudentLocation
         let headers : [String:String] = [OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID, OTMClient.HeaderKeys.ParseRESTAPIKey: OTMClient.Constants.RESTApiKey]
         let jsonBody : [String:AnyObject] = [
-            OTMClient.JSONResponseKeys.uniqueKey: "\(studentLocation.uniqueKey)",
-            OTMClient.JSONResponseKeys.firstName: "\(studentLocation.firstName)",
-            OTMClient.JSONResponseKeys.lastName: "\(studentLocation.lastName)",
-            OTMClient.JSONResponseKeys.mapString: "\(studentLocation.mapString)",
-            OTMClient.JSONResponseKeys.mediaURL: "\(studentLocation.mediaURL)",
-            OTMClient.JSONResponseKeys.latitude:  "\(studentLocation.latitude)",
-            OTMClient.JSONResponseKeys.longitude: "\(studentLocation.longitude)"
+            OTMClient.JSONResponseKeys.uniqueKey: "\(studentLocation.uniqueKey!)",
+            OTMClient.JSONResponseKeys.firstName: "\(studentLocation.firstName!)",
+            OTMClient.JSONResponseKeys.lastName: "\(studentLocation.lastName!)",
+            OTMClient.JSONResponseKeys.mapString: "\(studentLocation.mapString!)",
+            OTMClient.JSONResponseKeys.mediaURL: "\(studentLocation.mediaURL!)",
+            OTMClient.JSONResponseKeys.latitude:   (studentLocation.latitude!),
+            OTMClient.JSONResponseKeys.longitude:  (studentLocation.longitude!)
         ]
         
         /* 2. Make the request */

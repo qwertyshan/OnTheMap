@@ -111,8 +111,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func getLocationsForMap () {
         
         OTMClient.sharedInstance().getStudentLocations() { (success, errorString) in
-            
-            print("MapViewController -> Called getStudentLocations. Error: \(errorString).") // debug 
+            if errorString != nil {
+                print("MapViewController -> Called getStudentLocations. Error: \(errorString).") // debug
+
+                let alert = UIAlertController(title: "Error", message: errorString?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
+                self.presentViewController(alert, animated: true, completion: nil);
+            }
             
             if success {
                 print("Got student data")
