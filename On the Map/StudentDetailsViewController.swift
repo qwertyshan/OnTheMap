@@ -8,10 +8,13 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 // MARK: - StudentDetailsViewController: UIViewController
 
 class StudentDetailsViewController: UIViewController {
+    
+    var studentLocation = StudentLocation()
     
     enum viewState {
         case One
@@ -23,12 +26,17 @@ class StudentDetailsViewController: UIViewController {
     @IBOutlet var fullView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var topView1: UIView!
-    @IBOutlet weak var enterLocationTextField: UITextField!
     @IBOutlet weak var middleView1: UIView!
     @IBOutlet weak var bottomView1: UIView!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var topView2: UIView!
     @IBOutlet weak var bottomView2: UIView!
+    
+    @IBOutlet weak var enterLocationTextField: UITextField!
+    @IBOutlet weak var enterURLTextField: UITextField!
+    
+    @IBOutlet weak var findOnMapButton: UIButton!
+    @IBOutlet weak var submitURLButton: UIButton!
     
     // MARK: Views
     
@@ -47,9 +55,45 @@ class StudentDetailsViewController: UIViewController {
     }
     
     @IBAction func findOnTouchUp(sender: AnyObject) {
+        let address = enterLocationTextField.text
+        
+        if let address = address {
+            
+            // TODO 1: Geolocate address
+            
+            // TODO 2: If geolocation works
+            
+                // TODO 3: save lat/lon in new StudentLocation object
+            
+                // TODO 4: place pin on map
+            
+                // TODO 5: show viewState.Two
+            
+            // TODO 6: If geolocation fails, show error
+            
+        } else {
+            print("No address entered")
+            
+            // TODO 7: Alert if no address provided
+        }
     }
     
     @IBAction func submitOnTouchUp(sender: AnyObject) {
+        
+        // TODO 1: check if URL has been provided.
+        
+            // TODO 2: check if if no http:// provided, add it to URL
+            
+            // TODO 3: update StudentLocation object with URL
+            
+            // TODO 4: post StudentLocation object to Parse
+            
+            // TODO 5: If failure, show alert
+        
+            // TODO 6: If success, dismiss controller
+        
+        // TODO 7: If no URL provided, show alert
+        
     }
     
     
@@ -66,7 +110,7 @@ class StudentDetailsViewController: UIViewController {
             mapView.hidden      = true
             topView2.hidden     = true
             bottomView2.hidden  = true
-            print("viewState.One")
+            
         case .Two:
             fullView.backgroundColor = UIColor(red:0.2, green:0.4, blue:0.6, alpha:1.0) // set bg color to this bluish tinge
             cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Normal) // set title color to white

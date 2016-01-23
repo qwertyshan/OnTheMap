@@ -18,9 +18,7 @@
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
-        </mutableArray>
-        <mutableArray key="Roboto-Thin.ttf">
-            <string>Roboto-Thin</string>
+            <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -90,9 +88,9 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKT-7U-uGm">
-                                        <rect key="frame" x="20" y="96" width="335" height="40"/>
-                                        <color key="backgroundColor" red="1" green="0.26404059530000001" blue="0.001131755526" alpha="1" colorSpace="calibratedRGB"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKT-7U-uGm">
+                                        <rect key="frame" x="20" y="93" width="335" height="40"/>
+                                        <color key="backgroundColor" red="1" green="0.20000000000000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
                                         <state key="normal" title="Login">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -104,7 +102,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gxe-4j-8ot">
                                         <rect key="frame" x="20" y="149" width="335" height="40"/>
                                         <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
                                         <state key="normal" title="Don't have an account? Sign Up">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -145,7 +143,7 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B57-Xu-9sl">
                                 <rect key="frame" x="20" y="602" width="335" height="45"/>
-                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.20000000000000001" green="0.40000000000000002" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="tFH-dG-wwU"/>
                                 </constraints>
@@ -196,7 +194,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-139.5" y="204.5"/>
+            <point key="canvasLocation" x="-163.5" y="204.5"/>
         </scene>
         <!--TabBarController-->
         <scene sceneID="Hk5-Uh-MHl">
@@ -530,9 +528,12 @@
                         <outlet property="bottomView2" destination="xu8-FQ-A4G" id="jcR-NX-6IO"/>
                         <outlet property="cancelButton" destination="ccW-gk-b6e" id="uQ3-mn-7qa"/>
                         <outlet property="enterLocationTextField" destination="Pyy-F3-F3B" id="bYV-Nr-8n6"/>
+                        <outlet property="enterURLTextField" destination="oHN-Be-V2Y" id="rYM-NL-SlP"/>
+                        <outlet property="findOnMapButton" destination="nK7-BZ-E0C" id="Bce-Ag-ihr"/>
                         <outlet property="fullView" destination="f8V-QH-vl0" id="SN7-3Q-9vI"/>
                         <outlet property="mapView" destination="8ou-tj-rka" id="FEd-td-0w0"/>
                         <outlet property="middleView1" destination="YLB-26-caR" id="RuR-yM-vUj"/>
+                        <outlet property="submitURLButton" destination="0sO-Pl-aO1" id="Zbw-hn-LB2"/>
                         <outlet property="topView1" destination="phO-kI-I0F" id="Wfr-9c-BuZ"/>
                         <outlet property="topView2" destination="EQN-2u-2d1" id="nUg-nP-YdZ"/>
                         <outlet property="view" destination="f8V-QH-vl0" id="iKy-Iw-fx4"/>
