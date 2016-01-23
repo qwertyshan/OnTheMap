@@ -20,6 +20,7 @@ class StudentDetailsViewController: UIViewController {
     
     // MARK: - IBOutlets
     
+    @IBOutlet var fullView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var topView1: UIView!
     @IBOutlet weak var enterLocationTextField: UITextField!
@@ -33,7 +34,6 @@ class StudentDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -58,13 +58,18 @@ class StudentDetailsViewController: UIViewController {
     func setViewState(viewState: StudentDetailsViewController.viewState) {
         switch viewState {
         case .One:
+            fullView.backgroundColor = UIColor(white:0.8, alpha:1.0)    // set bg color to light gray
+            cancelButton.setTitleColor(UIColor(red:0.2, green:0.4, blue:0.6, alpha:1.0), forState: .Normal) // set title color to this bluish tinge
             topView1.hidden     = false
             middleView1.hidden  = false
             bottomView1.hidden  = false
             mapView.hidden      = true
             topView2.hidden     = true
             bottomView2.hidden  = true
+            print("viewState.One")
         case .Two:
+            fullView.backgroundColor = UIColor(red:0.2, green:0.4, blue:0.6, alpha:1.0) // set bg color to this bluish tinge
+            cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Normal) // set title color to white
             topView1.hidden     = true
             middleView1.hidden  = true
             bottomView1.hidden  = true

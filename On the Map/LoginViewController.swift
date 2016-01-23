@@ -114,6 +114,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func signupTouchUpInside(sender: AnyObject) {
+        // Open Udacity sign-up page in browser
+        let toOpen = NSURL(string: "https://www.udacity.com/account/auth#!/signup")
+        let app = UIApplication.sharedApplication()
+        app.openURL(toOpen!)
     }
     
     @IBAction func loginFacebookTouchUpInside(sender: AnyObject) {
