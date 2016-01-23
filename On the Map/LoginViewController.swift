@@ -41,8 +41,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //passwordTextField.leftViewMode = UITextFieldViewMode.Always
         debugTextLabel.hidden = true
         //********* For testing only ************//
-        emailTextField.text = ""
-        passwordTextField.text = ""
+        emailTextField.text = "rao.shantanu@gmail.com"
+        passwordTextField.text = "january1"
     }
     
     // MARK: View settings

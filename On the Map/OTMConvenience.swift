@@ -78,8 +78,6 @@ extension OTMClient {
     
     func getStudentLocations(completionHandler: (result: [StudentLocation]?, error: NSError?) -> Void) -> Void {
         
-        var studentLocations = [StudentLocation]()
-        
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         let method : String = Methods.ParseGetStudentLocations
         let headers : [String:String] = [OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID, OTMClient.HeaderKeys.ParseRESTAPIKey: OTMClient.Constants.RESTApiKey]
@@ -98,9 +96,9 @@ extension OTMClient {
                     
                     let studentLocations = StudentLocation.sharedInstance
                     studentLocations.studentArray = StudentLocation.arrayFromResults(results)
-                    print("*******studentLocations in convenience function******")
-                    print(studentLocations.studentArray)
-                    print("*******END OF studentLocations in convenience function******")
+                    //print("*******studentLocations in convenience function******")
+                    //print(studentLocations.studentArray)
+                    //print("*******END OF studentLocations in convenience function******")
                     
                     
                     completionHandler(result: studentLocations.studentArray, error: nil)

@@ -207,7 +207,11 @@
                     <navigationItem key="navigationItem" title="On The Map" id="8xh-wH-FwV">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="3cG-a1-3mL"/>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="LFo-rl-Wby"/>
+                            <barButtonItem systemItem="refresh" id="LFo-rl-Wby">
+                                <connections>
+                                    <action selector="reloadLocationsOnTouchUp:" destination="FJx-OK-QUc" id="QYt-tC-Eem"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="pin" id="mXr-J3-1xS">
                                 <connections>
                                     <segue destination="r9G-Tr-ErU" kind="presentation" id="5v6-dn-nA5"/>
@@ -217,7 +221,10 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="addLocation" destination="mXr-J3-1xS" id="Tuo-1r-QLI"/>
+                        <outlet property="logout" destination="3cG-a1-3mL" id="xAB-0e-ox6"/>
                         <outlet property="mapView" destination="QWf-2E-qZD" id="7Ke-nO-4Jr"/>
+                        <outlet property="reloadLocations" destination="LFo-rl-Wby" id="Mbs-Sf-2go"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2No-br-5S0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -252,7 +259,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="studentCell" textLabel="nL1-Gb-cso" imageView="nDF-Ts-vzC" style="IBUITableViewCellStyleDefault" id="yLx-dg-j7F">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="studentCell" textLabel="nL1-Gb-cso" detailTextLabel="atX-oQ-fM0" imageView="nDF-Ts-vzC" style="IBUITableViewCellStyleSubtitle" id="yLx-dg-j7F">
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yLx-dg-j7F" id="Ppu-Bs-a3M">
@@ -260,7 +267,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nL1-Gb-cso">
-                                            <rect key="frame" x="62" y="0.0" width="298" height="43.5"/>
+                                            <rect key="frame" x="62" y="6" width="31.5" height="19.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -270,6 +277,13 @@
                                             <rect key="frame" x="15" y="5" width="32" height="32"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </imageView>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="atX-oQ-fM0">
+                                            <rect key="frame" x="62" y="25.5" width="40.5" height="13.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -282,7 +296,11 @@
                     <navigationItem key="navigationItem" title="On The Map" id="9ze-i0-30z">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="7Rp-Ws-GoB"/>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="l6d-Ip-fuD"/>
+                            <barButtonItem systemItem="refresh" id="l6d-Ip-fuD">
+                                <connections>
+                                    <action selector="reloadLocationsOnTouchUp:" destination="fKN-sN-DvD" id="KKO-4k-H6n"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="pin" id="LRm-m8-ZKj">
                                 <connections>
                                     <segue destination="r9G-Tr-ErU" kind="presentation" id="NcT-F5-h7D"/>
@@ -291,6 +309,12 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="addLocation" destination="LRm-m8-ZKj" id="MrH-PN-kdb"/>
+                        <outlet property="logout" destination="7Rp-Ws-GoB" id="oqi-9i-QCN"/>
+                        <outlet property="reloadLocations" destination="l6d-Ip-fuD" id="PBw-pE-gX1"/>
+                        <outlet property="tableView" destination="FVB-6w-qi8" id="Uy5-Hq-xWC"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hhF-sZ-gHz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
