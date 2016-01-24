@@ -75,7 +75,10 @@ extension OTMClient {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         let method : String = Methods.ParseGetStudentLocations
-        let headers : [String:String] = [OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID, OTMClient.HeaderKeys.ParseRESTAPIKey: OTMClient.Constants.RESTApiKey]
+        let headers : [String:String] = [
+            OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID,
+            OTMClient.HeaderKeys.ParseRESTAPIKey: OTMClient.Constants.RESTApiKey
+        ]
         
         /* 2. Make the request */
         taskForGETMethod(method, baseURLSecure: OTMClient.Constants.ParseBaseURLSecure, headers: headers) { JSONResult, error in
@@ -105,7 +108,11 @@ extension OTMClient {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         let method : String = Methods.ParsePostStudentLocation
-        let headers : [String:String] = [OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID, OTMClient.HeaderKeys.ParseRESTAPIKey: OTMClient.Constants.RESTApiKey]
+        let headers : [String:String] = [
+            OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID,
+            OTMClient.HeaderKeys.ParseRESTAPIKey: OTMClient.Constants.RESTApiKey,
+            "application/json": "Content-Type"
+        ]
         let jsonBody : [String:AnyObject] = [
             OTMClient.JSONResponseKeys.uniqueKey: "\(studentLocation.uniqueKey!)",
             OTMClient.JSONResponseKeys.firstName: "\(studentLocation.firstName!)",

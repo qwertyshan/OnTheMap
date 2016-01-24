@@ -103,7 +103,6 @@ class OTMClient : NSObject {
             for (key, value) in headers {
                 request.addValue(value, forHTTPHeaderField: key)
             }
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         } else {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
