@@ -19,7 +19,7 @@ OnTheMap app allows users to share their location and a URL with their fellow Ud
 ![OTM login view](/doc/otm11.png) 
 ![OTM login view](/doc/otm11-1.png)
 
-## View Stored Memes
+## Map and List Views of other Users
 See other students’ locations as pins on a map, or in a table view.
 
 Pinch and zoom on the map to view students from around the world.
