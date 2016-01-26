@@ -65,17 +65,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     // MARK: Actions
     
     @IBAction func loginTouchUpInside(sender: AnyObject) {
-        OTMClient.sharedInstance().postSession(emailTextField.text!, password: passwordTextField.text!) { (success, errorString) in
+        OTMClient.sharedInstance().postSession(emailTextField.text!, password: passwordTextField.text!) { (success, error) in
             if success == true {
                 print("Logged in")
                 dispatch_async(dispatch_get_main_queue(), {
                     self.completeLogin(OTMClient.AuthService.Udacity)
                 })
             } else {
-                print("Failed login")
-                let alert = UIAlertController(title: "Error", message: errorString?.description, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                self.presentViewController(alert, animated: true, completion: nil)
+                dispatch_async(dispatch_get_main_queue(), {
+                    Convenience.showAlert(self, error: error!)
+                })
             }
         }
     }
@@ -97,7 +96,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
         OTMClient.sharedInstance().authServiceUsed = service
         let controller = storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
         presentViewController(controller, animated: true, completion: nil)
-        
     }
     
     // MARK: Facebook login delegate methods
@@ -105,11 +103,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate, FBSDKLoginButt
     func loginButton(loginFacebookButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         if ((error) != nil) {
             print("Failed Facebook login")
-            let alert = UIAlertController(title: "Error", message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-        else if result.isCancelled {
+            dispatch_async(dispatch_get_main_queue(), {
+                Convenience.showAlert(self, error: error!)
+            })
+        } else if result.isCancelled {
             print("Cancelled Facebook login")
         }
         else {

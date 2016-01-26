@@ -57,22 +57,23 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             dismissViewControllerAnimated(true, completion: nil)
             
         } else {    // if Udacity was used to log in
-        
-            OTMClient.sharedInstance().deleteSession() { (success, errorString) in
+            
+            OTMClient.sharedInstance().deleteSession() { (success, error) in
                 
-                print("MapViewController -> Called deleteSession. Error: \(errorString).") // debug
-                
-                if success {
+                if error != nil {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        Convenience.showAlert(self, error: error!)
+                    })
+                } else if success {
                     print("Session Deleted")
                     dispatch_async(dispatch_get_main_queue()) {
                         self.dismissViewControllerAnimated(true, completion: nil)
                     }
                 } else {
-                    print("Could not delete/logout session.")
-                    
-                    let alert = UIAlertController(title: "Error", message: "Could not delete/logout session.", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                    self.presentViewController(alert, animated: true, completion: nil);
+                    dispatch_async(dispatch_get_main_queue(), {
+                        let error = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not delete/logout session"])
+                        Convenience.showAlert(self, error: error)
+                    })
                 }
             }
         }
@@ -110,26 +111,23 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func getLocationsForMap () {
         
-        OTMClient.sharedInstance().getStudentLocations() { (success, errorString) in
-            if errorString != nil {
-                print("MapViewController -> Called getStudentLocations. Error: \(errorString).") // debug
-
-                let alert = UIAlertController(title: "Error", message: errorString?.description, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                self.presentViewController(alert, animated: true, completion: nil);
-            }
+        OTMClient.sharedInstance().getStudentLocations() { (success, error) in
             
-            if success {
+            if error != nil {
+                dispatch_async(dispatch_get_main_queue(), {
+                    Convenience.showAlert(self, error: error!)
+                })
+            } else if success {
                 print("Got student data")
                 dispatch_async(dispatch_get_main_queue()) {
+                    
                     self.setLocationsOnMap()
                 }
             } else {
-                print("Could not get student data")
-                
-                let alert = UIAlertController(title: "Error", message: "Could not get student data.", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                self.presentViewController(alert, animated: true, completion: nil);
+                dispatch_async(dispatch_get_main_queue(), {
+                    let error = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not get student data."])
+                    Convenience.showAlert(self, error: error)
+                })
             }
         }
     }

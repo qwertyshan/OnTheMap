@@ -11,6 +11,7 @@
 		8F8B0DD21C535CE7002C1EF2 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F8B0DCF1C535CE7002C1EF2 /* Roboto-Regular.ttf */; };
 		8F8B0DD31C535CE7002C1EF2 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F8B0DD01C535CE7002C1EF2 /* Roboto-Thin.ttf */; };
 		8F8B0DD41C535D63002C1EF2 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8FC9D58F1C4F35B10010B0B9 /* Info.plist */; };
+		8FBAA95A1C5703160066D929 /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBAA9591C5703160066D929 /* Convenience.swift */; };
 		8FC9D5841C4F35B10010B0B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */; };
 		8FC9D5861C4F35B10010B0B9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC9D5851C4F35B10010B0B9 /* LoginViewController.swift */; };
 		8FC9D5891C4F35B10010B0B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FC9D5871C4F35B10010B0B9 /* Main.storyboard */; };
@@ -32,6 +33,7 @@
 		8F8B0DCF1C535CE7002C1EF2 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		8F8B0DD01C535CE7002C1EF2 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		8F8B0DD51C53AC0F002C1EF2 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "../Bridging-Header.h"; sourceTree = "<group>"; };
+		8FBAA9591C5703160066D929 /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 		8FC9D5801C4F35B10010B0B9 /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FC9D5831C4F35B10010B0B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8FC9D5851C4F35B10010B0B9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				8FC9D5851C4F35B10010B0B9 /* LoginViewController.swift */,
+				8FBAA9591C5703160066D929 /* Convenience.swift */,
 				8FC9D59C1C5034FF0010B0B9 /* StudentDetailsViewController.swift */,
 				8FC9D59E1C5035220010B0B9 /* ListViewController.swift */,
 				8FC9D5A01C5035320010B0B9 /* MapViewController.swift */,
@@ -230,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FC9D5861C4F35B10010B0B9 /* LoginViewController.swift in Sources */,
+				8FBAA95A1C5703160066D929 /* Convenience.swift in Sources */,
 				8FC9D5B11C5040B30010B0B9 /* OTMClient.swift in Sources */,
 				8FC9D5AF1C5040790010B0B9 /* OTMConstants.swift in Sources */,
 				8FC9D5841C4F35B10010B0B9 /* AppDelegate.swift in Sources */,

@@ -31,14 +31,18 @@ class OTMClient : NSObject {
     
     // MARK: GET
     
-    func taskForGETMethod(method: String, baseURLSecure: String, headers: [String:String]?, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    func taskForGETMethod(method: String, baseURLSecure: String, parameters: [String: AnyObject]?, headers: [String:String]?, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
         /* 1. Set the parameters */
         
-        
         /* 2/3. Build the URL and configure the request */
       
-        let urlString = baseURLSecure + method
+        var urlString: String
+        if let parameters = parameters {
+            urlString = baseURLSecure + method + OTMClient.escapedParameters(parameters)
+        } else {
+            urlString = baseURLSecure + method
+        }
         let url = NSURL(string: urlString)!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
@@ -54,32 +58,21 @@ class OTMClient : NSObject {
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                if let response = response as? NSHTTPURLResponse {
-                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
-                } else if let response = response {
-                    print("Your request returned an invalid response! Response: \(response)!")
-                } else {
-                    print("Your request returned an invalid response!")
-                }
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                print("No data was returned by the request!")
-                return
-            }
+            OTMClient.manageErrors(data, response: response, error: error, completionHandler: completionHandler)
             
             /* 5/6. Parse the data and use the data (happens in completion handler) */
-            OTMClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
+    
+            if let data = data {
+                
+                var newData: NSData
+                
+                if method.containsString("users") {
+                    newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+                } else {
+                    newData = data
+                }
+                OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
+            }
         }
         
         /* 7. Start the request */
@@ -121,42 +114,23 @@ class OTMClient : NSObject {
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                if let response = response as? NSHTTPURLResponse {
-                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
-                } else if let response = response {
-                    print("Your request returned an invalid response! Response: \(response)!")
-                } else {
-                    print("Your request returned an invalid response!")
-                }
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                print("No data was returned by the request!")
-                return
-            }
+            OTMClient.manageErrors(data, response: response, error: error, completionHandler: completionHandler)
             
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             
-            var newData: NSData
+            if let data = data {
             
-            switch method {
-            // If requesting method is for Udacity, shift data by 5 characters
-            case OTMClient.Methods.UdacityPostSession:
-                newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-            default:
-                newData = data
+                var newData: NSData
+                
+                switch method {
+                // If requesting method is for Udacity, shift data by 5 characters
+                case OTMClient.Methods.UdacityPostSession:
+                    newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+                default:
+                    newData = data
+                }
+                OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
             }
-            OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
         }
         
         /* 7. Start the request */
@@ -196,42 +170,23 @@ class OTMClient : NSObject {
         /* 4. Make the request */
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                if let response = response as? NSHTTPURLResponse {
-                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
-                } else if let response = response {
-                    print("Your request returned an invalid response! Response: \(response)!")
-                } else {
-                    print("Your request returned an invalid response!")
-                }
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                print("No data was returned by the request!")
-                return
-            }
+            OTMClient.manageErrors(data, response: response, error: error, completionHandler: completionHandler)
             
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             
-            var newData: NSData
+            if let data = data {
             
-            switch method {
-                // If requesting method is for Udacity, shift data by 5 characters
-            case OTMClient.Methods.UdacityPostSession, OTMClient.Methods.UdacityDeleteSession:
-                newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-            default:
-                newData = data
+                var newData: NSData
+                
+                switch method {
+                    // If requesting method is for Udacity, shift data by 5 characters
+                case OTMClient.Methods.UdacityPostSession, OTMClient.Methods.UdacityDeleteSession:
+                    newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+                default:
+                    newData = data
+                }
+                OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
             }
-            OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
         }
         
         /* 7. Start the request */
@@ -241,6 +196,43 @@ class OTMClient : NSObject {
     }
     
     // MARK: Helpers
+    
+    class func manageErrors(data: NSData?, response: NSURLResponse?, error: NSError?, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
+        /* GUARD: Was there an error? */
+        guard (error == nil) else {
+            print("Error: There was an error with your request: \(error)")
+            let modifiedError = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription])
+            completionHandler(result: nil, error: modifiedError)
+            return
+        }
+        
+        /* GUARD: Did we get a successful 2XX response? */
+        guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+            if let response = response as? NSHTTPURLResponse {
+                if response.statusCode == 403 {
+                    print("Authentication Error: Status code: \(response.statusCode)!")
+                    completionHandler(result: nil, error: NSError(domain: "Authentication Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Status code: \(response.statusCode)!"]))
+                } else {
+                    print("Server Error: Your request returned an invalid response! Status code: \(response.statusCode)!")
+                    completionHandler(result: nil, error: NSError(domain: "Server Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Your request returned an invalid response! Status code: \(response.statusCode)!"]))
+                }
+            } else if let response = response {
+                print("Server Error: Your request returned an invalid response! Response: \(response)!")
+                completionHandler(result: nil, error: NSError(domain: "Server Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Your request returned an invalid response! Response: \(response)!"]))
+            } else {
+                print("Server Error: Your request returned an invalid response!")
+                completionHandler(result: nil, error: NSError(domain: "Server Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Your request returned an invalid response!"]))
+            }
+            return
+        }
+        
+        /* GUARD: Was there any data returned? */
+        guard let _ = data else {
+            print("Network Error: No data was returned by the request!")
+            completionHandler(result: nil, error: NSError(domain: "Network Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data was returned by the request!"]))
+            return
+        }
+    }
     
     /* Helper: Substitute the key for the value that is contained within the method name */
     class func subtituteKeyInMethod(method: String, key: String, value: String) -> String? {

@@ -19,8 +19,10 @@ extension OTMClient {
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         let method : String = Methods.UdacityPostSession
         let jsonBody : [String:AnyObject] = [
-            OTMClient.JSONBodyKeys.Udacity: [OTMClient.JSONBodyKeys.Username: "\(username)",
-                OTMClient.JSONBodyKeys.Password: "\(password)"]
+            OTMClient.JSONBodyKeys.Udacity: [
+                OTMClient.JSONBodyKeys.Username: "\(username)",
+                OTMClient.JSONBodyKeys.Password: "\(password)"
+            ]
         ]
         
         /* 2. Make the request */
@@ -34,9 +36,10 @@ extension OTMClient {
                 if let results = JSONResult["account"] as? [String: AnyObject] {
                     OTMClient.sharedInstance().authServiceUsed = OTMClient.AuthService.Udacity
                     StudentLocation.sharedInstance.uniqueKey = results["key"] as? String
+                    print("uniqueKey: \(StudentLocation.sharedInstance.uniqueKey)") //debug
                     completionHandler(success: true, error: nil)
                 } else {
-                    completionHandler(success: false, error: NSError(domain: "postSession parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse postSession"]))
+                    completionHandler(success: false, error: NSError(domain: "Client Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse postSession data."]))
                 }
             }
         }
@@ -63,17 +66,69 @@ extension OTMClient {
                     print("Session deleted for ID: \(results)")
                     completionHandler(success: true, error: nil)
                 } else {
-                    completionHandler(success: false, error: NSError(domain: "deleteSession parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse deleteSession"]))
+                    completionHandler(success: false, error: NSError(domain: "Client Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse deleteSession data."]))
                 }
             }
         }
     }
+    
+    // MARK: UDACITY - GETting Student Name
+    
+    func queryStudentName(completionHandler: (success: Bool, error: NSError?) -> Void) -> Void {
+        
+        /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let method: String
+        if let uniqueKey = StudentLocation.sharedInstance.uniqueKey {
+            method = OTMClient.subtituteKeyInMethod(Methods.UdacityUserData, key: URLKeys.UserID, value: uniqueKey)!
+        } else {
+            let error = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot post when logged in with Facebook credentials. Please log in with Udacity credentials."])
+            completionHandler(success: false, error: error)
+            return
+        }
+        
+        /* 2. Make the request */
+        taskForGETMethod(method, baseURLSecure: OTMClient.Constants.UdacityBaseURLSecure, parameters: nil, headers: nil) { JSONResult, error in
+            
+            /* 3. Send the desired value(s) to completion handler */
+            if let error = error {
+                completionHandler(success: false, error: error)
+            } else {
+                
+                if let result = JSONResult["user"] as! [String : AnyObject]? {    // If result, store first and last name in sharedinstance object
+                    
+                    let studentLocation = StudentLocation.sharedInstance
+                    if let firstname = result["first_name"] {
+                        print(firstname)
+                        studentLocation.firstName = firstname as? String
+                    }
+                    if let lastname = result["last_name"] {
+                        print(lastname)
+                        studentLocation.lastName = lastname as? String
+                    }
+                    if (studentLocation.firstName != nil) && (studentLocation.lastName != nil) {
+                        completionHandler(success: true, error: nil)
+                        print("In queryStudentName -> \(studentLocation.firstName!) \(studentLocation.lastName!)")    // debug
+                    } else {
+                        completionHandler(success: false, error: NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not get user's name from server."]))
+                    }
+                    
+                } else {
+                    completionHandler(success: false, error: NSError(domain: "Client Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse queryStudentName data."]))
+                }
+            }
+        }
+    }
+
     
     // MARK: PARSE - GETting StudentLocations
     
     func getStudentLocations(completionHandler: (success: Bool, error: NSError?) -> Void) -> Void {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
+        let parameters: [String: AnyObject] = [
+            OTMClient.ParameterKeys.Limit: Int(100),
+            OTMClient.ParameterKeys.Order: "-updatedAt"
+        ]
         let method : String = Methods.ParseGetStudentLocations
         let headers : [String:String] = [
             OTMClient.HeaderKeys.ParseAppID: OTMClient.Constants.AppID,
@@ -81,7 +136,7 @@ extension OTMClient {
         ]
         
         /* 2. Make the request */
-        taskForGETMethod(method, baseURLSecure: OTMClient.Constants.ParseBaseURLSecure, headers: headers) { JSONResult, error in
+        taskForGETMethod(method, baseURLSecure: OTMClient.Constants.ParseBaseURLSecure, parameters: parameters, headers: headers) { JSONResult, error in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
@@ -96,11 +151,12 @@ extension OTMClient {
                     completionHandler(success: true, error: nil)
                     
                 } else {
-                    completionHandler(success: false, error: NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations results"]))
+                    completionHandler(success: false, error: NSError(domain: "Client Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations data."]))
                 }
             }
         }
     }
+    
     
     // MARK: PARSE - POSTing a StudentLocation
     
@@ -134,7 +190,7 @@ extension OTMClient {
                 if let _ = JSONResult {
                     completionHandler(success: true, error: nil)
                 } else {
-                    completionHandler(success: false, error: NSError(domain: "postStudentLocation parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse postStudentLocation"]))
+                    completionHandler(success: false, error: NSError(domain: "Client Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse postStudentLocation data."]))
                 }
             }
         }

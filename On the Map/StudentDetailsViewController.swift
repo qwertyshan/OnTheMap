@@ -47,8 +47,7 @@ class StudentDetailsViewController: UIViewController, UITextFieldDelegate {
         enterURLTextField.delegate = self
         enterURLTextField.delegate = self
         
-        studentLocation.firstName = "Shantanu"
-        studentLocation.lastName = "Rao"
+        queryStudentName()  // Get student name from server
         
         setViewState(.One)
         findOnMapButton.layer.cornerRadius = 4
@@ -68,47 +67,20 @@ class StudentDetailsViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func findOnTouchUp(sender: AnyObject) {
 
+        geocodeStartLoad()
         
         let address = enterLocationTextField.text
         
         if let address = address {
             
             // Geolocate address
-            let geocoder = CLGeocoder()
-            geocoder.geocodeAddressString(address, completionHandler: {(placemarks, error) -> Void in
-                
-                if let placemark = placemarks?[0] { // If there's a result, pick first location in array
-                    self.studentLocation.latitude = Float(placemark.location!.coordinate.latitude)
-                    self.studentLocation.longitude = Float(placemark.location!.coordinate.longitude)
-                    self.studentLocation.mapString = address
-                    
-                    self.setViewState(viewState.Two)    // Change view
-                    self.activityIndicator.startAnimating() // start activity indicator
-                    
-                    self.mapView.addAnnotation(MKPlacemark(placemark: placemark))   // Place pin on mapView
-                    self.mapView.camera.altitude = 50000.0
-                    self.mapView.setCenterCoordinate(placemark.location!.coordinate, animated: true)
-                    
-                    self.activityIndicator.stopAnimating()  // stop activity indicator
-                    
-                } else if let error = error {
-                    print(error.description)
-                    let alert = UIAlertController(title: "Error", message: error.description, preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                    self.presentViewController(alert, animated: true, completion: nil);
-                    
-                } else {
-                    print("Could not complete geocoding request.")
-                    let alert = UIAlertController(title: "Error", message: "Could not complete geocoding request.", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                    self.presentViewController(alert, animated: true, completion: nil);
-                }
-            })
+            self.geocodeAddress(address)
             
         } else {
             print("No location entered")
         }
         
+        geocodeFinishLoad()
     }
     
     @IBAction func submitOnTouchUp(sender: AnyObject) {
@@ -121,7 +93,6 @@ class StudentDetailsViewController: UIViewController, UITextFieldDelegate {
                 studentLocation.mediaURL = url
             }
             postToParse()   // post StudentLocation to Parse
-            self.dismissViewControllerAnimated(true, completion: nil)
             
         } else {
             print("No URL entered")
@@ -129,6 +100,44 @@ class StudentDetailsViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: Helper functions
+    
+    func geocodeAddress(address: String) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(address, completionHandler: {(placemarks, error) -> Void in
+            
+            if let placemark = placemarks?[0] { // If there's a result, pick first location in array
+                self.studentLocation.latitude = Float(placemark.location!.coordinate.latitude)
+                self.studentLocation.longitude = Float(placemark.location!.coordinate.longitude)
+                self.studentLocation.mapString = address
+                
+                self.mapView.addAnnotation(MKPlacemark(placemark: placemark))   // Place pin on mapView
+                self.mapView.camera.altitude = 100000.0
+                self.mapView.setCenterCoordinate(placemark.location!.coordinate, animated: true)
+                
+            } else if let error = error {
+                dispatch_async(dispatch_get_main_queue(), {
+                    Convenience.showAlert(self, error: error)
+                })
+                
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let error = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not complete geocoding request."])
+                    Convenience.showAlert(self, error: error)
+                })
+            }
+        })
+    }
+    
+    func geocodeStartLoad() {
+        activityIndicator.startAnimating()
+    }
+    
+    func geocodeFinishLoad() {
+        
+        activityIndicator.stopAnimating()
+        activityIndicator.hidden = true
+        self.setViewState(viewState.Two)    // Change view
+    }
     
     func setViewState(viewState: StudentDetailsViewController.viewState) {
         switch viewState {
@@ -141,6 +150,7 @@ class StudentDetailsViewController: UIViewController, UITextFieldDelegate {
             mapView.hidden      = true
             topView2.hidden     = true
             bottomView2.hidden  = true
+            activityIndicator.hidden = true
             
         case .Two:
             fullView.backgroundColor = UIColor(red:0.2, green:0.4, blue:0.6, alpha:1.0) // set bg color to this bluish tinge
@@ -151,35 +161,55 @@ class StudentDetailsViewController: UIViewController, UITextFieldDelegate {
             mapView.hidden      = false
             topView2.hidden     = false
             bottomView2.hidden  = false
+            activityIndicator.hidden = true
         }
+    }
+    
+    func queryStudentName() {
+        
+        OTMClient.sharedInstance().queryStudentName() { (success, error) in
+            
+            if error != nil {
+                dispatch_async(dispatch_get_main_queue(), {
+                    Convenience.showAlert(self, error: error!)
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            } else if success {
+                print("Student name retrieved successfully.")
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let error = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not get student name from server. Tray again."])
+                    Convenience.showAlert(self, error: error)
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }
+        }
+        
+        print(studentLocation.firstName, studentLocation.lastName)
     }
     
     func postToParse() {
         
         print(studentLocation.uniqueKey, studentLocation.firstName, studentLocation.lastName, studentLocation.mapString, studentLocation.mediaURL, studentLocation.latitude, studentLocation.longitude)
-
         
-        
-        OTMClient.sharedInstance().postStudentLocation(studentLocation) { (success, errorString) in
+        OTMClient.sharedInstance().postStudentLocation(studentLocation) { (success, error) in
             
-            if errorString != nil {
-                print(errorString?.description)
-                let alert = UIAlertController(title: "Error", message: errorString?.description, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                self.presentViewController(alert, animated: true, completion: nil);
+            if error != nil {
+                dispatch_async(dispatch_get_main_queue(), {
+                    Convenience.showAlert(self, error: error!)
+                })
             } else if success {
                 print("StudentLocation posted")
                 dispatch_async(dispatch_get_main_queue()) {
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
             } else {
-                print("Could not post StudentLocation.")
-                
-                let alert = UIAlertController(title: "Error", message: "Could not post location record to Parse.", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil));
-                self.presentViewController(alert, animated: true, completion: nil);
+                dispatch_async(dispatch_get_main_queue(), {
+                    let error = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not post StudentLocation."])
+                    Convenience.showAlert(self, error: error)
+                })
             }
-        }
+        } 
     }
 }
 

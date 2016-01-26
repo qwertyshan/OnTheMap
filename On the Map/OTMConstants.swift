@@ -58,8 +58,8 @@ extension OTMClient {
         static let UserID = "id"
         static let Limit = "limit"
         static let Skip = "skip"
-        static let UpdatedAtDefault = "updatedAt"
-        static let UpdatedAtReverse = "-updatedAt"
+        static let Where = "where"
+        static let Order = "order"
         
     }
     
